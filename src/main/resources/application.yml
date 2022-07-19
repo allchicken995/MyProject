@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: xyj_project
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/my_project?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=CTT
+    username: root
+    password: 123456
+    hikari:
+      minimum-idle: 5
+      idle-timeout: 600000
+      maximum-pool-size: 10
+      auto-commit: true
+      pool-name: MyHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+server:
+  port: 8666
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml, classpath:mybatis/mapping/**/*.xml
+  typeAliasesPackage: com.xyj.**
+  global-config:
+    id-type: 0
+    field-strategy: 1
+    db-column-underline: true
+    refresh-mapper: true
+    logic-delete-value: 0
+    logic-not-delete-value: 1
+    sql-parser-cache: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
