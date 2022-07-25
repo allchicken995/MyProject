@@ -7,7 +7,7 @@ public enum DataMaskingFunc {
     NO_MASK((str, maskChar) -> {
         return str;
     }),
-    ALL_MASK((str, maskChar) -> {
+    ALL_MASK ((str, maskChar) -> {
         if (StringUtils.hasLength(str)) {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < str.length(); i++) {
@@ -31,6 +31,13 @@ public enum DataMaskingFunc {
             return str;
         }
     });
+
+
+
+
+
+
+
 
     private final DataMaskingOperation operation;
 
