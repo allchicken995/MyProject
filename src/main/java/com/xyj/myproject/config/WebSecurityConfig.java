@@ -80,6 +80,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().
                 antMatchers("/getUser").hasAuthority("query_user").
                 //antMatchers("/**").fullyAuthenticated().
+                /**
+                 * 在使用自定义方法后，框架自带的拦截方法需要依据自定义方法进行拦截
+                 */
                 withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
                     public <O extends FilterSecurityInterceptor> O postProcess(O o) {
