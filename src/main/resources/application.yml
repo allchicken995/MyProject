@@ -33,3 +33,6 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+
+logging:
+  config: src/main/resources/log4j.properties
