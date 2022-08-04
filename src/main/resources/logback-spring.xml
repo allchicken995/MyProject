@@ -2,10 +2,10 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
     <!--<property name="log.path" value="/home/www/Servers/logs" />-->
-    <property name="log.path" value="E:/logs" />
+    <property name="log.path" value="E:/MyWorkSpaces/MyProject/logs" />
     <!-- 定义日志文件 输入位置 -->
-    <!--<property name="logDir" value="/home/www/Servers/logbak" />-->
-    <property name="logDir" value="E:/logbak" />
+    <!--<property name="logDir" value="/home/www/Servers/logback" />-->
+    <property name="logDir" value="E:/MyWorkSpaces/MyProject/logback" />
     <!-- 日志最大的历史 30天 -->
     <property name="maxHistory" value="30" />
 
