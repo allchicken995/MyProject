@@ -31,8 +31,8 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         //更新用户表上次登录时间、更新人、更新时间等字段
-        User userDetails = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        SysUser sysUser = sysUserService.selectByName(userDetails.getUsername());
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SysUser sysUser = sysUserService.selectByName(username);
         sysUser.setLastLoginTime(new Date());
         sysUser.setUpdateTime(new Date());
         sysUser.setUpdateUser(sysUser.getId());
