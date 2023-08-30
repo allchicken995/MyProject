@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Author: Hutengfei
+ * @Author: XuYinjie
  * @Description:
- * @Date Create in 2019/8/29 14:36
+ * @Date Create in 2023/8/29 14:36
  */
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired

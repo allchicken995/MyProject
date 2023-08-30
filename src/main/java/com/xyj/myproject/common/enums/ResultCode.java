@@ -34,8 +34,16 @@ public enum ResultCode {
     USER_ACCOUNT_ALREADY_EXIST(2008, "账号已存在"),
     USER_ACCOUNT_USE_BY_OTHERS(2009, "账号下线"),
 
-    /* 业务错误 */
-    NO_PERMISSION(3001, "没有权限");
+    /* 权限错误 */
+    NO_PERMISSION(3001, "没有权限"),
+
+    /* 登录业务错误 */
+    MOBILE_IS_EMPTY(4001, "手机号为空"),
+    CODE_IS_EMPTY(4002, "验证码为空"),
+    CODE_EXPIRED(4003, "验证码过期"),
+    CODE_ERROR(4004, "验证码错误"),
+    USERNAME_IS_EMPTY(4005, "用户名为空"),
+    PASSWORD_IS_EMPTY(4006, "密码为空");
     private Integer code;
     private String message;
 

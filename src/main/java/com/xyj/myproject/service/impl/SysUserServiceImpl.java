@@ -77,8 +77,25 @@ public class SysUserServiceImpl implements SysUserService {
         return this.sysUserDao.deleteById(id) > 0;
     }
 
+    /**
+     * 根据用户名查询用户
+     *
+     * @param userName 用户名
+     * @return 用户对象
+     */
     @Override
     public SysUser selectByName(String userName) {
         return this.sysUserDao.selectByName(userName);
+    }
+
+    /**
+     * 根据用户手机号查询用户
+     *
+     * @param phoneNumb 手机号
+     * @return 用户对象
+     */
+    @Override
+    public SysUser selectByPhoneNumb(String phoneNumb) {
+        return this.sysUserDao.selectByPhoneNumb(phoneNumb);
     }
 }

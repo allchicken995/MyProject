@@ -4,7 +4,6 @@ import com.xyj.myproject.config.Filter.MobileCodeAuthenticationFilter;
 import com.xyj.myproject.config.handler.*;
 import com.xyj.myproject.config.provider.MobileCodeAuthenticationProvider;
 import com.xyj.myproject.config.provider.UsernamePasswordAuthenticationProvider;
-import com.xyj.myproject.config.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -114,17 +113,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth){
         auth.authenticationProvider(usernamePasswordAuthenticationProvider())
                 .authenticationProvider(mobileCodeAuthenticationProvider());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable();
+        http.addFilterBefore(securityInterceptor, FilterSecurityInterceptor.class)
+                .addFilterBefore(mobileCodeAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .cors().and().csrf().disable();
         http.authorizeRequests().
                 //antMatchers("/getUser").hasAuthority("query_user").
-                antMatchers( "/mobileCodeLogin").permitAll().
+                antMatchers( "/mobileCodeLogin", "/test").permitAll().
                 anyRequest().authenticated().
                 /**
                  * 在使用自定义方法后，框架自带的拦截方法需要依据自定义方法进行拦截
@@ -155,8 +156,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         and().sessionManagement().
                 maximumSessions(1).//同一账号同时登录最大用户数
                 expiredSessionStrategy(sessionInformationExpiredStrategy);//会话失效(账号被挤下线)处理逻辑
-        http.addFilterBefore(securityInterceptor, FilterSecurityInterceptor.class)
-                .addFilterBefore(mobileCodeAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                /*failureHandler(authenticationFailureHandler).//登录失败处理逻辑
+                //异常处理(权限拒绝、登录失效等)
+                        and().exceptionHandling().
+                accessDeniedHandler(accessDeniedHandler).//权限拒绝处理逻辑
+                authenticationEntryPoint(authenticationEntryPoint).//匿名用户访问无权限资源时的异常处理
+                //会话管理
+                        and().sessionManagement().
+                maximumSessions(1).//同一账号同时登录最大用户数
+                expiredSessionStrategy(sessionInformationExpiredStrategy);//会话失效(账号被挤下线)处理逻辑*/
     }
 
 }

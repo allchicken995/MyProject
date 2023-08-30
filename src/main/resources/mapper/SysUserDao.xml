@@ -16,6 +16,7 @@
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="createUser" column="create_user" jdbcType="INTEGER"/>
         <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="phoneNumb" column="phone_numb" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
@@ -141,4 +142,15 @@
     <select id="selectByName" resultMap="SysUserMap">
         select * from sys_user where account = #{userName};
     </select>
+
+    <!--根据手机号查询用户-->
+    <select id="selectByPhoneNumb" resultMap="SysUserMap">
+        select
+            id,
+            account,
+            user_name
+        from sys_user
+        where phone_numb = #{phoneNumb};
+    </select>
+
 </mapper>

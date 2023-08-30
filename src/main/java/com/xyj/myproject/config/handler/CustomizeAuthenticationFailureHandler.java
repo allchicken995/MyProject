@@ -33,6 +33,13 @@ public class CustomizeAuthenticationFailureHandler implements AuthenticationFail
         } else if (e instanceof BadCredentialsException) {
             //密码错误
             result = ResultTool.fail(ResultCode.USER_CREDENTIALS_ERROR);
+            //根据错误中的message判断错误类型
+            if (e.getMessage().equals("验证码已过期")){
+                result = ResultTool.fail(ResultCode.CODE_EXPIRED);
+            }
+            if (e.getMessage().equals("验证码不正确")){
+                result = ResultTool.fail(ResultCode.CODE_ERROR);
+            }
         } else if (e instanceof CredentialsExpiredException) {
             //密码过期
             result = ResultTool.fail(ResultCode.USER_CREDENTIALS_EXPIRED);
@@ -45,6 +52,22 @@ public class CustomizeAuthenticationFailureHandler implements AuthenticationFail
         } else if (e instanceof InternalAuthenticationServiceException) {
             //用户不存在
             result = ResultTool.fail(ResultCode.USER_ACCOUNT_NOT_EXIST);
+            //根据错误中的message判断错误类型
+            if (e.getMessage().equals("手机号为空")){
+                result = ResultTool.fail(ResultCode.MOBILE_IS_EMPTY);
+            }
+            if (e.getMessage().equals("验证码为空")){
+                result = ResultTool.fail(ResultCode.CODE_IS_EMPTY);
+            }
+            if (e.getMessage().equals("用户未注册")){
+                result = ResultTool.fail(ResultCode.USER_ACCOUNT_NOT_EXIST);
+            }
+            if (e.getMessage().equals("用户名为空")){
+                result = ResultTool.fail(ResultCode.USERNAME_IS_EMPTY);
+            }
+            if (e.getMessage().equals("密码为空")){
+                result = ResultTool.fail(ResultCode.PASSWORD_IS_EMPTY);
+            }
         }else{
             //其他错误
             result = ResultTool.fail(ResultCode.COMMON_FAIL);

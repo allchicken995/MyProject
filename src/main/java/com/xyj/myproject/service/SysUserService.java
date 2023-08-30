@@ -7,8 +7,8 @@ import java.util.List;
 /**
  * 用户表(SysUser)表服务接口
  *
- * @author makejava
- * @since 2019-08-29 15:22:19
+ * @author XuYinjie
+ * @since 2023-08-29 15:22:19
  */
 public interface SysUserService {
 
@@ -56,9 +56,17 @@ public interface SysUserService {
     /**
      * 根据用户名查询用户
      *
-     * @param userName
-     * @return
+     * @param userName 用户名
+     * @return 用户对象
      */
     SysUser selectByName(String userName);
+
+    /**
+     * 根据用户手机号查询用户
+     *
+     * @param phoneNumb 手机号
+     * @return 用户对象
+     */
+    SysUser selectByPhoneNumb(String phoneNumb);
 
 }
