@@ -1,7 +1,9 @@
 package com.xyj.myproject.config.provider;
 
 import com.xyj.myproject.config.token.MobileCodeAuthenticationToken;
+import com.xyj.myproject.entity.SysPermission;
 import com.xyj.myproject.entity.SysUser;
+import com.xyj.myproject.service.SysPermissionService;
 import com.xyj.myproject.service.SysUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import redis.clients.jedis.Jedis;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class MobileCodeAuthenticationProvider implements AuthenticationProvider {
@@ -23,6 +26,9 @@ public class MobileCodeAuthenticationProvider implements AuthenticationProvider 
 
     @Autowired
     private SysUserService sysUserService;
+
+    @Autowired
+    private SysPermissionService sysPermissionService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -67,7 +73,18 @@ public class MobileCodeAuthenticationProvider implements AuthenticationProvider 
         if (StringUtils.isEmpty(username)) {
             return authorities;
         }
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        //根据用户名查询用户
+        SysUser sysUser = sysUserService.selectByName(username);
+        if (sysUser != null) {
+            //获取该用户所拥有的权限
+            List<SysPermission> sysPermissions = sysPermissionService.selectListByUser(sysUser.getId());
+            // 声明用户授权
+            sysPermissions.forEach(sysPermission -> {
+                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(sysPermission.getPermissionCode());
+                authorities.add(grantedAuthority);
+            });
+        }
+
         return authorities;
     }
 

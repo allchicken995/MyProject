@@ -130,14 +130,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 /**
                  * 在使用自定义方法后，框架自带的拦截方法需要依据自定义方法进行拦截
                  */
-                /*withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
                     public <O extends FilterSecurityInterceptor> O postProcess(O o) {
                         o.setAccessDecisionManager(accessDecisionManager);//决策管理器
                         o.setSecurityMetadataSource(securityMetadataSource);//安全元数据源
                         return o;
                     }
-                }).*/
+                }).
                 //登出
                         and().logout().
                 permitAll().//允许所有用户

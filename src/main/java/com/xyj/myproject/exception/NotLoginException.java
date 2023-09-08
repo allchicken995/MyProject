@@ -3,9 +3,9 @@ package com.xyj.myproject.exception;
 import org.springframework.security.core.AuthenticationException;
 
 /**
- * @Author: Hutengfei
+ * @Author: XuYinjie
  * @Description:
- * @Date Create in 2019/9/3 20:50
+ * @Date Create in 2023/9/3 20:50
  */
 public class NotLoginException extends AuthenticationException {
 

@@ -21,4 +21,8 @@ class MyProjectApplicationTests {
 
     }
 
+    public static void main(String[] args) {
+
+    }
+
 }

@@ -1,7 +1,9 @@
 package com.xyj.myproject.config.provider;
 
 import com.xyj.myproject.config.WebSecurityConfig;
+import com.xyj.myproject.entity.SysPermission;
 import com.xyj.myproject.entity.SysUser;
+import com.xyj.myproject.service.SysPermissionService;
 import com.xyj.myproject.service.SysUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +17,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private SysUserService sysUserService;
+
+    @Autowired
+    private SysPermissionService sysPermissionService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -43,7 +50,7 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
             throw new InternalAuthenticationServiceException("用户不存在");
         }
         // 认证密码
-        if (!bCryptPasswordEncoder.matches(user.getPassword(), password)) {
+        if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("密码不正确");
         }
         UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(username,
@@ -62,10 +69,18 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
         if (StringUtils.isEmpty(username)) {
             return authorities;
         }
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        if ("admin".equals(username)) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        //根据用户名查询用户
+        SysUser sysUser = sysUserService.selectByName(username);
+        if (sysUser != null) {
+            //获取该用户所拥有的权限
+            List<SysPermission> sysPermissions = sysPermissionService.selectListByUser(sysUser.getId());
+            // 声明用户授权
+            sysPermissions.forEach(sysPermission -> {
+                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(sysPermission.getPermissionCode());
+                authorities.add(grantedAuthority);
+            });
         }
+
         return authorities;
     }
 
